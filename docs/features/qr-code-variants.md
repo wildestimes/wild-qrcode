@@ -42,7 +42,7 @@ This feature allows users to create a variety of QR codes with different visual 
   - Description: Integrate with an AI image generation tool to create images from text prompts.
 
 - **Task 3.2: QR Code as Control for AI Art**
-  - Status: `todo`
+  - Status: `done`
   - Description: Use the structure of the QR code as a guide for the AI image generation, creating a visually appealing and scannable image.
 
 - **Task 3.3: User Interface for AI Generation**
