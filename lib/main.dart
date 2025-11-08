@@ -3,22 +3,52 @@ import 'dart:io';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:image/image.dart';
 import 'dart:ui' as ui;
+import 'package:args/args.dart';
+
+ui.Color parseColor(String colorString) {
+  if (colorString.startsWith('0x')) {
+    return ui.Color(int.parse(colorString));
+  } else if (colorString.startsWith('#')) {
+    return ui.Color(int.parse('ff' + colorString.substring(1), radix: 16));
+  } else {
+    // Basic color names for simplicity
+    switch (colorString.toLowerCase()) {
+      case 'black': return ui.Color(0xFF000000);
+      case 'white': return ui.Color(0xFFFFFFFF);
+      case 'red': return ui.Color(0xFFFF0000);
+      case 'green': return ui.Color(0xFF00FF00);
+      case 'blue': return ui.Color(0xFF0000FF);
+      default: return ui.Color(0xFF000000); // Default to black
+    }
+  }
+}
 
 void main(List<String> arguments) async {
-  if (arguments.isEmpty) {
-    print('Usage: dart run qr_code_generator.dart <url1> [url2 ...] [output_prefix]');
-    exit(1);
+  final parser = ArgParser()
+    ..addOption('color', abbr: 'c', defaultsTo: 'black', help: 'QR code fill color (hex or name)')
+    ..addOption('background', abbr: 'b', defaultsTo: 'white', help: 'QR code background color (hex or name)')
+    ..addFlag('help', abbr: 'h', hide: true);
+
+  ArgResults argResults = parser.parse(arguments);
+
+  if (argResults['help'] || argResults.rest.isEmpty) {
+    print('Usage: dart run qr_code_generator.dart [options] <url1> [url2 ...] [output_prefix]');
+    print(parser.usage);
+    exit(0);
   }
+
+  final ui.Color qrColor = parseColor(argResults['color']);
+  final ui.Color qrBackgroundColor = parseColor(argResults['background']);
 
   String outputPrefix = 'qrcode';
   List<String> urls = [];
 
-  // Determine if the last argument is an output prefix or a URL
-  if (arguments.length > 1 && !arguments.last.startsWith('http')) {
-    outputPrefix = arguments.last;
-    urls = arguments.sublist(0, arguments.length - 1);
+  // Determine if the last argument in rest is an output prefix or a URL
+  if (argResults.rest.length > 1 && !argResults.rest.last.startsWith('http')) {
+    outputPrefix = argResults.rest.last;
+    urls = argResults.rest.sublist(0, argResults.rest.length - 1);
   } else {
-    urls = arguments;
+    urls = argResults.rest;
   }
 
   for (int i = 0; i < urls.length; i++) {
@@ -30,11 +60,11 @@ void main(List<String> arguments) async {
         data: url,
         version: QrVersions.auto,
         gapless: true,
-        color: const QrEyeFrameColor(
-          color: ui.Color(0xFF000000),
+        color: QrEyeFrameColor(
+          color: qrColor,
         ),
-        emptyColor: const QrEyeFrameColor(
-          color: ui.Color(0xFFFFFFFF),
+        emptyColor: QrEyeFrameColor(
+          color: qrBackgroundColor,
         ),
       );
 
