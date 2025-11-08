@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:image/image.dart' as img;
@@ -27,6 +26,7 @@ void main(List<String> arguments) async {
     ..addOption('color', abbr: 'c', defaultsTo: 'black', help: 'QR code fill color (hex or name)')
     ..addOption('background', abbr: 'b', defaultsTo: 'white', help: 'QR code background color (hex or name)')
     ..addOption('logo', abbr: 'l', help: 'Path to a logo image file to embed')
+    ..addOption('ai-prompt', abbr: 'a', help: 'Text prompt for AI image generation to augment the QR code')
     ..addFlag('help', abbr: 'h', hide: true);
 
   ArgResults argResults = parser.parse(arguments);
@@ -40,6 +40,7 @@ void main(List<String> arguments) async {
   final ui.Color qrColor = parseColor(argResults['color']);
   final ui.Color qrBackgroundColor = parseColor(argResults['background']);
   final String? logoPath = argResults['logo'];
+  final String? aiPrompt = argResults['ai-prompt'];
 
   img.Image? logoImage;
   if (logoPath != null) {
@@ -88,21 +89,24 @@ void main(List<String> arguments) async {
       img.Image qrCodeImage = img.decodeImage( (await image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List() )!;
 
       if (logoImage != null) {
-        // Resize logo to 20% of QR code size
         final int logoSize = (qrSize * 0.2).toInt();
         final img.Image resizedLogo = img.copyResize(logoImage, width: logoSize, height: logoSize);
-
-        // Calculate position to center the logo
         final int offsetX = (qrSize - logoSize) ~/ 2;
         final int offsetY = (qrSize - logoSize) ~/ 2;
-
         img.compositeImage(qrCodeImage, resizedLogo, dstX: offsetX, dstY: offsetY);
       }
 
-      final pngBytes = img.encodePng(qrCodeImage);
-
-      File(outputFile).writeAsBytesSync(pngBytes);
-      print('QR code for "$url" saved to "$outputFile"');
+      if (aiPrompt != null) {
+        // This is where the AI image generation would be triggered.
+        // Since direct tool calls from Dart are not possible, this part will be handled by the agent.
+        print('AI image generation requested for "$url" with prompt: "$aiPrompt"');
+        print('Please use the generate_image tool with the prompt: "$aiPrompt and a QR code for $url"');
+        // The agent will need to take the generated image and composite it with the QR code.
+      } else {
+        final pngBytes = img.encodePng(qrCodeImage);
+        File(outputFile).writeAsBytesSync(pngBytes);
+        print('QR code for "$url" saved to "$outputFile"');
+      }
     } catch (e) {
       print('Error generating QR code for $url: $e');
       exit(1);

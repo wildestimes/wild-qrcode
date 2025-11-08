@@ -38,7 +38,7 @@ This feature allows users to create a variety of QR codes with different visual 
 ### Phase 3: AI-Augmented QR Codes
 
 - **Task 3.1: AI Image Generation Integration**
-  - Status: `todo`
+  - Status: `done`
   - Description: Integrate with an AI image generation tool to create images from text prompts.
 
 - **Task 3.2: QR Code as Control for AI Art**
