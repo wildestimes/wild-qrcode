@@ -46,5 +46,5 @@ This feature allows users to create a variety of QR codes with different visual 
   - Description: Use the structure of the QR code as a guide for the AI image generation, creating a visually appealing and scannable image.
 
 - **Task 3.3: User Interface for AI Generation**
-  - Status: `todo`
+  - Status: `done`
   - Description: Create a simple interface for the user to provide a URL and a text prompt for the AI-augmented QR code.
