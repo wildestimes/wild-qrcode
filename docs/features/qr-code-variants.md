@@ -22,7 +22,7 @@ This feature allows users to create a variety of QR codes with different visual 
   - Description: Implement a command-line tool to generate a standard QR code from a given URL and save it as an image file.
 
 - **Task 1.2: Content Variation**
-  - Status: `todo`
+  - Status: `done`
   - Description: Allow the tool to accept a list of URLs and generate a separate QR code for each.
 
 ### Phase 2: Visual Customization
