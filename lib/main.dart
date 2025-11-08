@@ -97,11 +97,12 @@ void main(List<String> arguments) async {
       }
 
       if (aiPrompt != null) {
-        // This is where the AI image generation would be triggered.
-        // Since direct tool calls from Dart are not possible, this part will be handled by the agent.
-        print('AI image generation requested for "$url" with prompt: "$aiPrompt"');
-        print('Please use the generate_image tool with the prompt: "$aiPrompt and a QR code for $url"');
-        // The agent will need to take the generated image and composite it with the QR code.
+        final tempQrFile = '${outputPrefix}_${i + 1}_temp_qr.png';
+        final pngBytes = img.encodePng(qrCodeImage);
+        File(tempQrFile).writeAsBytesSync(pngBytes);
+        print('Temporary QR code for "$url" saved to "$tempQrFile"');
+        print('Please use the edit_image tool with file: "$tempQrFile" and prompt: "$aiPrompt"');
+        print('After editing, save the result to "$outputFile"');
       } else {
         final pngBytes = img.encodePng(qrCodeImage);
         File(outputFile).writeAsBytesSync(pngBytes);
