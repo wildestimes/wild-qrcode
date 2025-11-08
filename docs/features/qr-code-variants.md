@@ -32,7 +32,7 @@ This feature allows users to create a variety of QR codes with different visual 
   - Description: Add options to specify the fill color and background color of the QR code.
 
 - **Task 2.2: Logo Embedding**
-  - Status: `todo`
+  - Status: `done`
   - Description: Add an option to overlay a user-provided logo in the center of the QR code.
 
 ### Phase 3: AI-Augmented QR Codes
