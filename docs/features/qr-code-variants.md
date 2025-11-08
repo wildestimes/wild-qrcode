@@ -28,7 +28,7 @@ This feature allows users to create a variety of QR codes with different visual 
 ### Phase 2: Visual Customization
 
 - **Task 2.1: Color Customization**
-  - Status: `todo`
+  - Status: `done`
   - Description: Add options to specify the fill color and background color of the QR code.
 
 - **Task 2.2: Logo Embedding**
